@@ -28,11 +28,11 @@ win['bg'] = 'green'
 #Левая и правая часть экрана
 frame_left = LabelFrame(win, text="Навигатор")
 frame_right = tk.Frame(win)
-frame_left['bg'] = 'green'
+frame_left['bg'] = '#00CC33'
 
 #Окна
 frame_right_func = tk.Frame(frame_right)
-frame_right_func['bg'] = 'green'
+frame_right_func['bg'] = '#00CC33'
 frame_right_bd = tk.Frame(frame_right)
 frame_right_syn = tk.Frame(frame_right)
 frame_right_ton = tk.Frame(frame_right)
@@ -67,7 +67,9 @@ my_list_per = Listbox(wrapper_syn)
 my_list_per.pack(fill="both",side = RIGHT, padx=20, pady=10)
 
 my_list_syn = Listbox(wrapper_syn)
-my_list_syn.pack(fill="both", expand=1)
+my_list_syn.pack(fill="both", expand=1, side = LEFT)
+my_list_slova = Listbox(wrapper_syn)
+my_list_slova.pack(fill="both", expand=1, side = LEFT)
 
 for frame in (frame_right_func, frame_right_bd, frame_right_syn, frame_right_ton):
   frame.grid(row=0,column=0,sticky='nsew')
@@ -91,14 +93,13 @@ def natasha():
   element={"name_object" : a}
   n = c_objects.find_one(element)
   element = n["num_object"]
-  os.system("spark-submit /home/vagrant/tomita-parser/build/bin/natasha.py"+ " " +str(element))
+  os.system("spark-submit /home/vagrant/tomita-parser/build/bin/natasha1.py"+ " " +str(element))
   
-
-  my_list_syn.delete(0,'end')
+  my_list_slova.delete(0,'end')
   f = open('/home/vagrant/tomita-parser/build/bin/syn1.txt')
   for line in f:
     line = line.replace('\n', '')
-    my_list_syn.insert(END,line)
+    my_list_slova.insert(END,line)
   f.close()
   
 def w2v():
@@ -126,10 +127,10 @@ w2v_btn = tk.Button(wrapper_func, text='Word2vec',command=model_w2v, bg = 'yello
 w2v_btn.pack(fill='x', ipady=5, side = LEFT, expand=1)
 
 w2v_btn = tk.Button(wrapper_syn, text='Контекстные синонимы',command=w2v, bg = 'purple', fg = 'white')
-w2v_btn.pack(fill='x', ipady=0, expand=1, side = LEFT)
+w2v_btn.pack(fill='x', ipady=0, expand=1, side = BOTTOM)
 
 natasha_btn = tk.Button(wrapper_syn, text='Слова окружения',command=natasha, bg = 'orange')
-natasha_btn.pack(fill='x', ipady=0, expand=1, side = LEFT)
+natasha_btn.pack(fill='x', ipady=0, expand=1, side = BOTTOM)
 
 frame_func_btn = tk.Button(frame_left, text='Главное меню',command=lambda:show_frame(frame_right_func), bg = 'blue', fg = 'white')
 frame_func_btn.pack(fill='y', ipadx=107, side = LEFT)
